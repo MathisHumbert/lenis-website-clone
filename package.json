@@ -1,0 +1,44 @@
+{
+  "name": "ssr-creative-boilerplate",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server",
+    "build": "cross-env VITE_DEV_MODE=false vite build",
+    "preview": "cross-env NODE_ENV=production node server"
+  },
+  "dependencies": {
+    "@prismicio/client": "^7.3.1",
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.4",
+    "errorhandler": "^1.5.1",
+    "express": "^4.18.2",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.4",
+    "pug": "^3.0.2",
+    "sass": "^1.71.0",
+    "sirv": "^2.0.4"
+  },
+  "devDependencies": {
+    "auto-bind": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "events": "^3.3.0",
+    "fontfaceobserver": "^2.3.0",
+    "gsap": "^3.12.5",
+    "imagesloaded": "^5.0.0",
+    "include-media": "^2.0.0",
+    "lenis": "^1.1.14",
+    "nodelist-foreach-polyfill": "^1.2.0",
+    "prefix": "^1.0.0",
+    "split-type": "^0.3.4",
+    "stats.js": "^0.17.0",
+    "three": "^0.167.1",
+    "ua-parser-js": "^1.0.37",
+    "vite": "^5.0.10",
+    "vite-plugin-glsl": "^1.3.0"
+  }
+}
