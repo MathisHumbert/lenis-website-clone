@@ -35,6 +35,7 @@ export default class Page extends EventEmitter {
 
     this.fontSize = 0;
     this.size = { width: 0, height: 0 };
+    this.scroll = 0;
 
     this.isVisible = false;
   }
@@ -126,16 +127,11 @@ export default class Page extends EventEmitter {
     return new Promise((res) => {
       const tl = gsap.timeline();
 
-      tl.set(document.documentElement, {
-        backgroundColor: this.element.getAttribute('data-background'),
-        color: this.element.getAttribute('data-color'),
-      })
-        .set(this.element, { autoAlpha: 1 }, 0)
-        .call(() => {
-          this.lenis.start();
-          this.isVisible = true;
-          res();
-        });
+      tl.set(this.element, { autoAlpha: 1 }, 0).call(() => {
+        this.lenis.start();
+        this.isVisible = true;
+        res();
+      });
     });
   }
 
@@ -157,8 +153,6 @@ export default class Page extends EventEmitter {
    * Events.
    */
   onResize(size, fontSize) {
-    if (!this.elements.wrapper) return;
-
     this.fontSize = fontSize;
     this.size = size;
 
@@ -177,7 +171,9 @@ export default class Page extends EventEmitter {
 
   onTouchUp() {}
 
-  onWheel(event) {}
+  onWheel(event) {
+    this.scroll = event.scroll;
+  }
 
   /**
    * Listeners.

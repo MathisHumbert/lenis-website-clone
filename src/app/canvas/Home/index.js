@@ -1,45 +1,58 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import Media from './Media';
+import Arm from './Arm';
 
 export default class Home {
-  constructor({ scene, screen, viewport }) {
+  constructor({ scene, screen }) {
     this.scene = scene;
     this.screen = screen;
-    this.viewport = viewport;
 
-    this.geometry = new THREE.PlaneGeometry(1, 1, 16, 16);
-
-    this.createMedia();
+    this.createLights();
+    this.createArm();
 
     this.show();
   }
 
-  createMedia() {
-    this.media = new Media({
-      element: document.querySelector('.home__media'),
-      scene: this.scene,
-      geometry: this.geometry,
-      screen: this.screen,
-      viewport: this.viewport,
+  createArm() {
+    const loader = new GLTFLoader();
+
+    loader.load('/models/arm.glb', (gltf) => {
+      const { scene: arm1 } = gltf;
+      this.arm = new Arm({ scene: this.scene, screen: this.screen, arm: arm1 });
     });
+  }
+
+  createLights() {
+    const ambientLight = new THREE.AmbientLight('#ff98a2');
+    this.scene.add(ambientLight);
+
+    const lightOneGroup = new THREE.Group();
+    const lightOne = new THREE.DirectionalLight(
+      new THREE.Color('#ff98a2'),
+      0.35
+    );
+    lightOneGroup.add(lightOne);
+    lightOneGroup.position.set(-200, 150, 50);
+    this.scene.add(lightOneGroup);
+
+    const lightTwoGroup = new THREE.Group();
+    const lightTwo = new THREE.DirectionalLight(
+      new THREE.Color('#ff98a2'),
+      0.15
+    );
+    lightTwoGroup.add(lightTwo);
+    lightTwoGroup.position.set(300, -100, 150);
+    this.scene.add(lightTwoGroup);
   }
 
   /**
    * Animations.
    */
-  show() {
-    if (this.media && this.media.show) {
-      this.media.show();
-    }
-  }
+  show() {}
 
   hide() {
-    let promise;
-
-    if (this.media && this.media.hide) {
-      promise = this.media.hide();
-    }
+    let promise = new Promise((res) => res());
 
     return promise;
   }
@@ -47,27 +60,25 @@ export default class Home {
   /**
    * Events.
    */
-  onResize({ screen, viewport }) {
-    if (this.media && this.media.onResize) {
-      this.media.onResize({ screen, viewport });
+  onResize({ screen }) {
+    if (this.arm && this.arm.onResize) {
+      this.arm.onResize({ screen });
+    }
+  }
+
+  onWheel(scroll) {
+    if (this.arm && this.arm.onWheel) {
+      this.arm.onWheel(scroll);
     }
   }
 
   /**
    * Loop.
    */
-  update(scroll) {
-    if (this.media && this.media.update) {
-      this.media.update(scroll);
-    }
-  }
+  update(scroll) {}
 
   /**
    * Destroy.
    */
-  destroy() {
-    if (this.media && this.media.destroy) {
-      this.media.destroy();
-    }
-  }
+  destroy() {}
 }

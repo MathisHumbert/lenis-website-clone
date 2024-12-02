@@ -1,0 +1,45 @@
+.why {
+  margin-bottom: 64rem;
+}
+
+.why__grid {
+  display: grid;
+  grid-template-columns: repeat($grid-count, minmax(0, 1fr));
+  grid-gap: $grid-gutter;
+  padding: 0 $grid-margin;
+}
+
+.why__sticky {
+  @extend %h2;
+
+  position: sticky;
+  top: 33%;
+  grid-column: 3 / span 4;
+  align-self: start;
+  padding: 2.4rem 3.2rem;
+  border-left: 4px solid $theme-contrast;
+}
+
+.why__features {
+  grid-column: 7 / span 4;
+  margin-top: 25.6rem;
+}
+
+.why__feature {
+  width: 100%;
+
+  &:not(&:first-of-type) {
+    margin-top: 40rem;
+  }
+
+  h3 {
+    @extend %h4;
+
+    color: $theme-contrast;
+    margin-bottom: 2.4rem;
+  }
+
+  p {
+    @extend %p;
+  }
+}

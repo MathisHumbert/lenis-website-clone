@@ -1,12 +1,75 @@
 extends ../index.pug 
+include ../mixins/icons.pug
 
 block variables 
   - var template = 'home'
 
 block content
-  .home(data-background='#1e1e1e' data-color='#dedede')
-    .home__top
-      h1=`${title} Page`
-      a(href=link.url)=`${link.text} Link`
-    .home__bottom
-      .home__media
+  .home
+    section.hero 
+      .hero__top
+        +title()
+        .hero__sub 
+          h2.hero__sub__title.h3 Smooth Scroll
+          h2.hero__sub__text © 2024 darkroom.engineering
+      .hero__bottom 
+        .hero__scroll 
+          .hero__scroll__text 
+            p scroll 
+            p to explore
+        h1.hero__description 
+          | A smooth scroll library
+          br
+          | fresh out of darkroom.engineering
+          br
+          | website designed by Studio Freight
+        a.hero__button(href="https://github.com/darkroomengineering/lenis")
+          span.hero__button__icon 
+            +github()
+          span.hero__button__text
+            span.hero__button__text__visible
+              | Check it out on github
+              +diagonal-arrow()
+            span.hero__button__text__hidden
+              | Check it out on github
+              +diagonal-arrow()
+    section.why 
+      .why__grid 
+        h2.why__sticky Why smooth scroll?  
+        aside.why__features
+          each item in why_features
+            .why__feature
+              if item.title
+                h3=item.title 
+              p=item.text
+    section.rethink 
+      .rethink__grid 
+        .rethink__highlight 
+          h2.rethink__highlight__title(data-animation="parallax" data-speed=-0.5) Rethinking smooth scroll
+        .rethink__comparison
+          p.rethink__comparison__text(data-animation="parallax" data-speed=0.5)
+            | We have to give props to libraries like&nbsp;
+            a(href="https://github.com/locomotivemtl/locomotive-scroll") Locomotive Scroll
+            | &nbsp;and 
+            a(href="https://github.com/locomotivemtl/locomotive-scroll") GSAP ScrollSmoother
+            | . They’re well built and well documented – and we’ve used them a lot. But they still have issues that keep them from being bulletproof.
+      .rethink__cards
+        .rethink__cards__wrapper
+          .rethink__cards__inner 
+            .rethink__cards__overflow 
+              each item, index in rethink_cards
+                .rethink__card
+                  p.rethink__card__number=`0${index +1}`
+                  p.rethink__card__text=item
+    section.solution 
+      .solution__inner 
+        .solution__zoom 
+          h2.solution__zoom__first 
+            | so we built 
+            br
+            span.contrast web scrolling
+          h2.solution__zoom__enter
+            | Enter
+            br
+            | Lenis
+          h2.solution__zoom__second As it should be

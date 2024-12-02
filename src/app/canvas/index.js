@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 
 import Home from './Home';
-import About from './About';
 
 export default class Canvas {
   constructor({ template, size }) {
@@ -23,25 +22,30 @@ export default class Canvas {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      this.screen.width / this.screen.height,
-      0.1,
-      100
+    this.camera = new THREE.OrthographicCamera(
+      this.screen.width / -2,
+      this.screen.width / 2,
+      this.screen.height / 2,
+      this.screen.height / -2,
+      0.01,
+      10000
     );
-    this.camera.position.z = 5;
+    this.camera.position.z = 1000;
   }
 
   createRender() {
     this.renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
+      powerPreference: 'high-performance',
     });
 
     this.renderer.setSize(this.screen.width, this.screen.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    document.body.appendChild(this.renderer.domElement);
+    const canvasEl = document.querySelector('.canvas');
+
+    canvasEl.appendChild(this.renderer.domElement);
   }
 
   /**
@@ -51,7 +55,6 @@ export default class Canvas {
     this.home = new Home({
       scene: this.scene,
       screen: this.screen,
-      viewport: this.viewport,
     });
   }
 
@@ -60,24 +63,6 @@ export default class Canvas {
 
     this.home.destroy();
     this.home = null;
-  }
-
-  /**
-   * About.
-   */
-  createAbout() {
-    this.about = new About({
-      scene: this.scene,
-      screen: this.screen,
-      viewport: this.viewport,
-    });
-  }
-
-  destroyAbout() {
-    if (!this.about) return;
-
-    this.about.destroy();
-    this.about = null;
   }
 
   /**
@@ -110,16 +95,8 @@ export default class Canvas {
       this.destroyHome();
     }
 
-    if (this.about) {
-      this.destroyAbout();
-    }
-
     if (template === 'home') {
       this.createHome();
-    }
-
-    if (template === 'about') {
-      this.createAbout();
     }
 
     this.template = template;
@@ -131,21 +108,14 @@ export default class Canvas {
     this.renderer.setSize(this.screen.width, this.screen.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    this.camera.aspect = this.screen.width / this.screen.height;
+    this.camera.left = this.screen.width / -2;
+    this.camera.right = this.screen.width / 2;
+    this.camera.top = this.screen.height / 2;
+    this.camera.bottom = this.screen.height / -2;
     this.camera.updateProjectionMatrix();
 
-    const fov = this.camera.fov * (Math.PI / 180);
-    const height = 2 * Math.tan(fov / 2) * this.camera.position.z;
-    const width = height * this.camera.aspect;
-
-    this.viewport = { width, height };
-
     if (this.home && this.home.onResize) {
-      this.home.onResize({ screen: this.screen, viewport: this.viewport });
-    }
-
-    if (this.about && this.about.onResize) {
-      this.about.onResize({ screen: this.screen, viewport: this.viewport });
+      this.home.onResize({ screen: this.screen });
     }
   }
 
@@ -155,7 +125,11 @@ export default class Canvas {
 
   onTouchUp() {}
 
-  onWheel(normalized) {}
+  onWheel({ scroll }) {
+    if (this.home && this.home.onWheel) {
+      this.home.onWheel(scroll);
+    }
+  }
 
   /**
    * Loop.
@@ -163,10 +137,6 @@ export default class Canvas {
   update(scroll, time) {
     if (this.home && this.home.update) {
       this.home.update(scroll);
-    }
-
-    if (this.about && this.about.update) {
-      this.about.update(scroll, time);
     }
 
     this.renderer.render(this.scene, this.camera);

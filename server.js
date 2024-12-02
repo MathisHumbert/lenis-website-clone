@@ -1,24 +1,14 @@
 import express from 'express';
-import fetch from 'node-fetch';
 import errorHandler from 'errorhandler';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
-import * as prismic from '@prismicio/client';
 import path from 'path';
 import 'dotenv/config';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
-
-const initApi = (req) => {
-  return prismic.createClient(process.env.PRISMIC_REPOSITORY, {
-    accessToken: process.env.PRISMIC_ACCESS_TOKEN,
-    req,
-    fetch,
-  });
-};
 
 const fetchDefaults = async (api) => {
   const assets = [];
@@ -72,35 +62,38 @@ if (!isProduction) {
 app.set('views', path.resolve('src/views'));
 app.set('view engine', 'pug');
 
+const homeData = {
+  why_features: [
+    {
+      title: null,
+      text: 'We’ve heard all the reasons to not use smooth scroll. It feels  hacky. It’s inaccessible. It’s not performant. It’s over-engineered. And historically, those were all true. But we like to imagine things as they could be, then build them. So, why should you use smooth scroll?',
+    },
+    {
+      title: 'Create more immersive interfaces',
+      text: 'Unlock the creative potential and impact of your web experiences. Smoothing the scroll pulls users into the flow of the experience that feels so substantial that they forget they’re navigating a web page.',
+    },
+    {
+      title: 'Normalize all your user inputs',
+      text: 'Give all your users the same (dope) experience whether they’re using trackpads, mouse wheels, or otherwise. With smooth scroll, you control how silky, heavy, or responsive the experience should be — no matter the input. Magic!',
+    },
+    {
+      title: 'Make your animations flawless',
+      text: 'Synchronization with native scroll is not reliable. Those jumps and delays with scroll-linked animations are caused by multi-threading, where modern browsers run animations/effects asynchronously with the scroll. Smooth scroll fixes this.',
+    },
+  ],
+  rethink_cards: [
+    'Loss of performance budget due to using CSS transforms',
+    'Inaccessibility from no page search support and native scrollbar',
+    'Non-negligible import costs (12.1kb - 24.34kb gzipped)',
+    'Limited animation systems for complex, scroll-based animations',
+    'Erasing native APIs like Intersection-Observer, CSS Sticky, etc.',
+  ],
+};
+
 app.get('/', async (req, res) => {
   try {
-    // const api = initApi(req);
-
-    // const defaults = await fetchDefaults(api);
-    // const home = await fetchHome(api);
-
     res.render('pages/home', {
-      title: 'Home',
-      link: { text: 'About', url: '/about' },
-      isProduction,
-    });
-  } catch (e) {
-    vite?.ssrFixStacktrace(e);
-    console.log(e.stack);
-    res.status(500).end(e.stack);
-  }
-});
-
-app.get('/about', async (req, res) => {
-  try {
-    // const api = initApi(req);
-
-    // const defaults = await fetchDefaults(api);
-    // const about = await fetchAbout(api);
-
-    res.render('pages/about', {
-      title: 'About',
-      link: { text: 'Home', url: '/', isProduction },
+      ...homeData,
       isProduction,
     });
   } catch (e) {

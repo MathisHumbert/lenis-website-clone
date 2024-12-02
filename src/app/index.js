@@ -18,7 +18,6 @@ import Clock from './classes/Clock';
 import Responsive from './classes/Responsive';
 
 import Home from './pages/Home';
-import About from './pages/About';
 
 import { each } from './utils/dom';
 
@@ -68,7 +67,6 @@ export default class App {
   createPages() {
     this.pages = {
       home: new Home(),
-      about: new About(),
     };
 
     this.page = this.pages[this.template];
@@ -101,8 +99,8 @@ export default class App {
 
   createGrid() {
     new Grid({
-      desktop: { count: 12, margin: 32, gutter: 20 },
-      mobile: { count: 4, margin: 24, gutter: 20 },
+      desktop: { count: 12, margin: 40, gutter: 24 },
+      mobile: { count: 6, margin: 24, gutter: 16 },
     });
   }
 
@@ -119,6 +117,7 @@ export default class App {
     this.lenis.stop();
     this.lenis.scrollTo(0, { immediate: true, force: true });
     this.lenis.on('scroll', ScrollTrigger.update);
+    this.lenis.on('scroll', this.onWheel);
 
     this.page.lenis = this.lenis;
   }
@@ -305,7 +304,7 @@ export default class App {
     });
     window.addEventListener('touchend', this.onTouchUp, { passive: true });
 
-    window.addEventListener('wheel', this.onWheel, { passive: true });
+    // window.addEventListener('wheel', this.onWheel, { passive: true });
   }
 
   addLinkListeners() {
@@ -337,8 +336,9 @@ export default class App {
   }
 }
 
-const satoshiFont = new FontFaceObserver('Satoshi');
+const slussenFont = new FontFaceObserver('Slussen');
+// const respiraFont = new FontFaceObserver('Respira');
 
-Promise.all([satoshiFont.load()])
+Promise.all([slussenFont.load()])
   .then(() => new App())
   .catch(() => new App());

@@ -2,35 +2,59 @@
   @extend %page;
 }
 
-.home__top {
-  height: 75vh;
-  width: 100%;
+@import './hero';
+@import './why';
+@import './rethink';
+
+.solution {
+  position: relative;
+  height: 1000vh;
+  color: $color-white;
+}
+
+.solution__inner {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.solution__zoom {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  padding: 4rem $grid-margin;
+  transform: scale(calc(1 + (var(--progress1)) * 3));
+}
 
-  h1 {
-    font-size: 12rem;
-  }
+.solution__zoom__first {
+  @extend %h1;
 
-  a {
-    color: plum;
-    font-size: 3rem;
+  font-size: 100vh / 850 * 10 * 16;
+  transform: translateY(calc(var(--progress1) * -100%));
+
+  .contrast {
+    color: $theme-contrast;
   }
 }
 
-.home__bottom {
-  height: 75vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 20rem;
+.solution__zoom__enter {
+  @extend %h3;
 
-  .home__media {
-    width: 90rem;
-    height: 90rem;
-  }
+  font-size: 100vh / 850 * 10 * 5.2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(calc((var(--progress1) * 8.5)));
+  transform-origin: 50% calc(50% - (var(--progress1) * 25%));
+}
+
+.solution__zoom__second {
+  @extend %h1;
+
+  font-size: 100vh / 850 * 10 * 16;
+  width: 100%;
+  text-align: end;
 }
