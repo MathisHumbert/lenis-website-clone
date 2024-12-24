@@ -73,3 +73,41 @@ block content
             br
             | Lenis
           h2.solution__zoom__second As it should be
+    section.featuring 
+      .featuring__inner 
+        .featuring__intro 
+          p 
+            | Lenis is an 
+            a(href="")  open-source library
+            |  built to standardize scroll experiences and sauce up websites with butter-smooth navigation, all while using the platform and keeping it accessible.
+      .featuring__section 
+        .featuring__cards 
+          .featuring__cards__sticky
+            aside.featuring__cards__title 
+              p 
+                | Lenis brings
+                br
+                span.grey the heat
+            .featuring__cards__list 
+              each item, index in featurings_cards
+                .featuring__cards__item 
+                  .featuring__cards__item__wrapper
+                    p.featuring__cards__item__number=`0${index + 1}`
+                    p.featuring__cards__item__text!=item.text.replace(/\n/g, '<br>')
+    section.in__use 
+      .in__use__wrapper 
+        aside.in__use__title 
+          p 
+            | Lenis 
+            br
+            span.grey in use 
+        ul.in__use__list 
+          each item in in_use
+            li
+              a.in__use__item(href=item.href) 
+                .in__use__item__inner 
+                  .in__use__item__title
+                    span=item.title 
+                    +diagonal-arrow-big()
+                  .in__use__item__source 
+                    span=item.source

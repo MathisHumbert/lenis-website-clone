@@ -88,6 +88,77 @@ const homeData = {
     'Limited animation systems for complex, scroll-based animations',
     'Erasing native APIs like Intersection-Observer, CSS Sticky, etc.',
   ],
+  featurings_cards: [
+    { text: 'Run scroll in the main thread' },
+
+    {
+      text: `Lightweight
+      (under 4kb)`,
+    },
+    { text: `Made for ${new Date().getFullYear()}+` },
+    { text: 'Bring your own animation library' },
+    {
+      text: 'CONTROL THE SCROLL EASING DURATION',
+    },
+    { text: 'Use any element as scroller' },
+    { text: 'Enjoy horizontal + vertical support' },
+    { text: 'Feel free to use “position: sticky” again' },
+    {
+      text: 'touch support',
+    },
+  ],
+  in_use: [
+    {
+      title: 'Deso',
+      source: 'Studio Freight',
+      href: 'https://deso.com',
+    },
+    {
+      title: 'Lunchbox',
+      source: 'Studio Freight',
+      href: 'https://lunchbox.io',
+    },
+    {
+      title: 'Scroll Animation Ideas for Image Grids',
+      source: 'Codrops',
+      href: 'https://tympanus.net/Development/ScrollAnimationsGrid/',
+    },
+    {
+      title: 'Easol',
+      source: 'Studio Freight',
+      href: 'https://easol.com',
+    },
+    {
+      title: 'How to Animate SVG Shapes on Scroll',
+      source: 'Codrops',
+      href: 'https://tympanus.net/Tutorials/OnScrollPathAnimations/',
+    },
+    {
+      title: 'Dragonfly',
+      source: 'Studio Freight',
+      href: 'https://dragonfly.xyz',
+    },
+    {
+      title: 'Yuga Labs',
+      source: 'Antinomy Studio',
+      href: 'https://yuga.com',
+    },
+    {
+      title: "Quentin Hocde's Portfolio",
+      source: 'Quentin Hocde',
+      href: 'https://quentinhocde.com/',
+    },
+    {
+      title: 'Houses Of',
+      source: 'Felix P. & Shelby Kay',
+      href: 'https://housesof.world/',
+    },
+    {
+      title: 'Heights Agency',
+      source: 'Francesco Michelini',
+      href: 'https://www.heights.agency/',
+    },
+  ],
 };
 
 app.get('/', async (req, res) => {

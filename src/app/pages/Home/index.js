@@ -1,3 +1,4 @@
+import gsap from 'gsap';
 import Parallax from '../../animations/Parallax';
 import Page from '../../classes/Page';
 import { each, getOffset, map } from '../../utils/dom';
@@ -15,11 +16,19 @@ export default class Home extends Page {
         rethinkCardsWrapper: '.rethink__cards__wrapper',
         rethinkCardsOverflow: '.rethink__cards__overflow',
         solution: '.solution',
+        featuring: '.featuring__section',
+        featuringItems: '.featuring__cards__item',
         animationsParallax: '[data-animation="parallax"]',
       },
     });
 
     window.threshold = [];
+    this.theme = 'dark';
+
+    this.featuring = {
+      start: 0,
+      end: 0,
+    };
   }
 
   create() {
@@ -65,6 +74,12 @@ export default class Home extends Page {
 
     this.solutionOffset = getOffset(this.elements.solution, this.scroll);
 
+    const featuringOffset = getOffset(this.elements.featuring, this.scroll);
+
+    this.featuring.start = featuringOffset.top - this.size.height * 2;
+    this.featuring.end =
+      featuringOffset.top + featuringOffset.height - this.size.height;
+
     window.threshold = [];
 
     window.threshold.push({ id: 'top', value: 0 });
@@ -91,6 +106,12 @@ export default class Home extends Page {
       this.horizontalSlider.onWheel(scroll);
     }
 
+    this.onSolutionWheel(scroll);
+
+    this.onFeaturingWheel(scroll);
+  }
+
+  onSolutionWheel(scroll) {
     const start = this.solutionOffset.top + this.size.height * 0.5;
     const end =
       this.solutionOffset.top + this.solutionOffset.height - this.size.height;
@@ -103,5 +124,39 @@ export default class Home extends Page {
 
     this.elements.solution.style.setProperty('--progress1', progress1);
     this.elements.solution.style.setProperty('--progress2', progress2);
+
+    if (progress2 === 1 && this.theme === 'dark') {
+      this.theme = 'light';
+      gsap.set(document.documentElement, {
+        background: 'rgb(239, 239, 239)',
+        color: 'rgb(0, 0, 0)',
+      });
+    }
+
+    if (progress !== 1 && this.theme === 'light') {
+      this.theme = 'dark';
+      gsap.set(document.documentElement, {
+        background: 'rgb(0, 0, 0)',
+        color: 'rgb(239, 239, 239)',
+      });
+    }
+  }
+
+  onFeaturingWheel(scroll) {
+    const progress = clamp(
+      0,
+      1,
+      mapRange(scroll, this.featuring.start, this.featuring.end, 0, 1)
+    );
+
+    const step = Math.floor(progress * 10);
+
+    each(this.elements.featuringItems, (element, index) => {
+      if (index <= step - 1) {
+        element.classList.add('current');
+      } else {
+        element.classList.remove('current');
+      }
+    });
   }
 }
