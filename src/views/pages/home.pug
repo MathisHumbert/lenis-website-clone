@@ -23,14 +23,14 @@ block content
           | fresh out of darkroom.engineering
           br
           | website designed by Studio Freight
-        a.hero__button(href="https://github.com/darkroomengineering/lenis")
-          span.hero__button__icon 
+        a.button(href="https://github.com/darkroomengineering/lenis")
+          span.button__icon 
             +github()
-          span.hero__button__text
-            span.hero__button__text__visible
+          span.button__text
+            span.button__text__visible
               | Check it out on github
               +diagonal-arrow()
-            span.hero__button__text__hidden
+            span.button__text__hidden
               | Check it out on github
               +diagonal-arrow()
     section.why 
@@ -111,3 +111,29 @@ block content
                     +diagonal-arrow-big()
                   .in__use__item__source 
                     span=item.source
+    footer.footer 
+      .footer__top 
+        p.footer__first 
+          | Lenis is 
+          br
+          span.contrast Open source
+        p.footer__last & open to features, forks or prs
+        a.button(href="https://github.com/darkroomengineering/lenis")
+          span.button__icon 
+            +github()
+          span.button__text
+            span.button__text__visible
+              | Let's build together
+              +diagonal-arrow()
+            span.button__text__hidden
+              | Let's build together
+              +diagonal-arrow()
+      .footer__bottom 
+        .footer__links 
+          a.footer__link(href="https://twitter.com/darkroomdevs") Twitter
+          a.footer__link(href="https://github.com/darkroomengineering") GitHub
+          a.footer__link(href="https://darkroom.engineering/") Website
+          a.footer__link(href="https://studiofreight.com") Designed by Studio Freight
+        p.footer__tm 
+          span ©
+          | 2024  darkroom.engineering

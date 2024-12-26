@@ -7,208 +7,172 @@
 @import './hero';
 @import './why';
 @import './rethink';
+@import './solutions';
+@import './featuring';
+@import './in_use';
 
-.solution {
+.button {
   position: relative;
-  height: 1000vh;
-  color: $color-white;
-}
-
-.solution__inner {
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  height: 100vh;
-
-  &::after {
-    content: '';
-    background-color: currentColor;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 50%;
-    transform: translateX(-50%) scaleX(var(--progress2));
-    top: 0;
-  }
-}
-
-.solution__zoom {
+  grid-column: 10 / span 3;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  height: 100%;
-  padding: 4rem $grid-margin;
-  transform: scale(calc(1 + (var(--progress1)) * 3));
-}
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  text-transform: uppercase;
+  line-height: 200%;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  color: $color-black;
+  overflow: hidden;
+  text-align: center;
 
-.solution__zoom__first {
-  @extend %h1;
-
-  font-size: 100vh / 850 * 10 * 16;
-  transform: translateY(calc(var(--progress1) * -100%));
-
-  .contrast {
-    color: $theme-contrast;
-  }
-}
-
-.solution__zoom__enter {
-  @extend %h3;
-
-  font-size: 100vh / 850 * 10 * 5.2;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(calc((var(--progress1) * 8.5)));
-  transform-origin: 50% calc(50% - (var(--progress1) * 25%));
-}
-
-.solution__zoom__second {
-  @extend %h1;
-
-  font-size: 100vh / 850 * 10 * 16;
-  width: 100%;
-  text-align: end;
-}
-
-.featuring {
-  position: relative;
-  padding-bottom: 16rem;
-  color: $theme-primary;
-  padding: 4rem;
-
+  &::after,
   &::before {
     @extend %cover;
 
     content: '';
-    height: 15rem;
-    background: linear-gradient(
-      to bottom,
-      rgb(239, 239, 239),
-      rgba(239, 239, 239, 0)
-    );
+    pointer-events: none;
+  }
+
+  &:before {
+    background: $theme-contrast;
+  }
+
+  &::after {
+    transform: scaleY(0);
+    transform-origin: top;
+    background: $theme-secondary;
+    transition: transform 600ms $ease-out-expo;
+    z-index: 0;
   }
 }
 
-.featuring__inner {
+.button__icon {
+  display: flex;
+  aspect-ratio: 1 / 1;
+  transition: border-color 600ms $ease-out-expo;
+  width: 4.8rem;
+  z-index: 10;
+  padding: 1.2rem;
+  background: $theme-primary;
+  border: 1px solid $color-pink;
+
+  svg {
+    color: $theme-secondary;
+    margin: auto;
+    transition: color 600ms $ease-out-expo;
+    background: $theme-primary;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}
+
+.button__text {
   position: relative;
-}
+  z-index: 10;
+  flex-grow: 1;
 
-.featuring__intro {
-  @extend %p-l;
-
-  padding-bottom: 44rem;
-
-  a {
-    color: $theme-contrast;
-  }
-}
-
-.featuring__cards {
-  height: 1600vh;
-  min-height: 131rem;
-}
-
-.featuring__cards__sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  padding: $grid-margin 0;
-
-  > * {
+  svg {
     position: relative;
+    z-index: 10;
+    aspect-ratio: 1 / 1;
+    width: 1rem;
+    margin-left: 1.6rem;
+    transition: transform 600ms $ease-out-expo;
   }
 }
 
-.featuring__cards__title {
-  @extend %h3;
+.button__text__visible,
+.button__text__hidden {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 2.4rem;
+}
 
-  position: absolute;
-  right: $grid-margin;
-  text-align: end;
+.button__text__visible {
+  position: relative;
+  transition: transform 600ms $ease-out-expo, opacity 600ms $ease-out-expo;
+  transform: scaleY(1);
+  transform-origin: bottom;
+}
 
-  .grey {
-    color: $color-grey;
+.button__text__hidden {
+  @extend %cover;
+
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 600ms $ease-out-expo, opacity 400ms $ease-out-expo;
+
+  svg {
+    transform: translate(-50%, 50%);
   }
 }
 
-.featuring__cards__list {
-}
+.button:hover {
+  color: $theme-primary;
 
-.featuring__cards__item {
-  position: absolute;
-  will-change: transform;
-  transition-duration: 1.2s;
-  transition-property: opacity, transform;
-  transition-timing-function: $ease-out-expo;
+  &::after {
+    transform-origin: bottom;
+    transform: scaleY(1);
+  }
 
-  @for $i from 0 through 8 {
-    &:nth-child(#{$i + 1}) {
-      top: calc((100vh - 44rem - 2 * $grid-margin) / 8 * $i);
-      left: calc((100vw - 44rem - 2 * $grid-margin) / 8 * $i);
+  .button__text__visible {
+    transform: scaleY(0);
+    opacity: 0;
+    transform-origin: top;
+
+    svg {
+      transform: translate(50%, -50%);
     }
   }
 
-  &:not(.current) {
-    transform: translate3d(100%, 100%, 0);
-    opacity: 0;
+  .button__text__hidden {
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+
+    svg {
+      transform: translate(0, 0);
+    }
+  }
+
+  .button__icon {
+    border: 1px solid $theme-secondary;
   }
 }
 
-.featuring__cards__item__wrapper {
+.footer {
+  position: relative;
+  height: 100vh;
+  padding: 4rem 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: columns(4);
-  aspect-ratio: 1 / 1;
-  padding: 2.4rem;
-  color: $theme-primary;
-  background: rgba(239, 239, 239, 0.8);
-  border: 1px solid currentColor;
-  backdrop-filter: blur(5px);
 }
 
-.featuring__cards__item__number {
-  font-size: 9.6rem;
-  color: $theme-contrast;
-  font-stretch: condensed;
-  font-weight: 900;
-  line-height: 86%;
-  letter-spacing: -0.02em;
+.footer__top {
+  display: grid;
+  grid-template-columns: repeat($grid-count, minmax(0, 1fr));
+  grid-gap: $grid-gutter;
 }
 
-.featuring__cards__item__text {
-  font-size: 2.8rem;
-  text-transform: uppercase;
-  font-stretch: expanded;
-  line-height: 100%;
-  letter-spacing: -0.01em;
+.footer__first {
 }
 
-.in__use {
+.footer__last {
 }
 
-.in__use__wrapper {
+.footer__bottom {
 }
 
-.in__use__title {
+.footer__links {
 }
 
-.in__use__list {
+.footer__link {
 }
 
-.in__use__item {
-}
-
-.in__use__item__inner {
-}
-
-.in__use__item__title {
-  svg {
-    display: none;
-  }
-}
-
-.in__use__item__source {
+.footer__tm {
 }
