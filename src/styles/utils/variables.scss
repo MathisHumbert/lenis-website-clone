@@ -1,6 +1,7 @@
-$z-indexes: ('grid', 'preloader', 'navigation', 'content', 'canvas');
+$z-indexes: ('grid', 'preloader', 'content', 'canvas');
 
 $ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+$ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
 $font-slussen: 'Slussen';
 $font-respira: 'Respira';

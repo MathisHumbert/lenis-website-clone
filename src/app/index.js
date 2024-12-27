@@ -131,6 +131,10 @@ export default class App {
     this.canvas.onPreloaded();
 
     this.page.show();
+
+    // gsap.delayedCall(0.4, () => {
+    //   this.onResize();
+    // });
   }
 
   onPopState() {

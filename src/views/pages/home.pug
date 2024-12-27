@@ -8,22 +8,23 @@ block content
   .home
     section.hero 
       .hero__top
-        +title()
+        div.hero__title
+          +title()
         .hero__sub 
-          h2.hero__sub__title.h3 Smooth Scroll
-          h2.hero__sub__text © 2024 darkroom.engineering
+          h2.hero__sub__title(data-animation="title") Smooth Scroll
+          h2.hero__sub__text(data-animation="title") © 2024 darkroom.engineering
       .hero__bottom 
         .hero__scroll 
           .hero__scroll__text 
-            p scroll 
-            p to explore
-        h1.hero__description 
+            p(data-animation="title") scroll 
+            p(data-animation="title") to explore
+        h1.hero__description(data-animation="text") 
           | A smooth scroll library
           br
           | fresh out of darkroom.engineering
           br
           | website designed by Studio Freight
-        a.button(href="https://github.com/darkroomengineering/lenis")
+        a.button(href="https://github.com/darkroomengineering/lenis" data-animation="appear")
           span.button__icon 
             +github()
           span.button__text
@@ -102,9 +103,9 @@ block content
             br
             span.grey in use 
         ul.in__use__list 
-          each item in in_use
+          each item, index in in_use
             li
-              a.in__use__item(href=item.href) 
+              a.in__use__item(href=item.href style={"--i": index} data-animation="appear") 
                 .in__use__item__inner 
                   .in__use__item__title
                     span=item.title 
@@ -118,7 +119,7 @@ block content
           br
           span.contrast Open source
         p.footer__last & open to features, forks or prs
-        a.button(href="https://github.com/darkroomengineering/lenis")
+        a.button.light(href="https://github.com/darkroomengineering/lenis")
           span.button__icon 
             +github()
           span.button__text
@@ -135,5 +136,5 @@ block content
           a.footer__link(href="https://darkroom.engineering/") Website
           a.footer__link(href="https://studiofreight.com") Designed by Studio Freight
         p.footer__tm 
-          span ©
+          span © 
           | 2024  darkroom.engineering

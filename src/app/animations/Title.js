@@ -1,7 +1,4 @@
-import gsap from 'gsap';
-
 import Animation from '../classes/Animation';
-import { expoOut } from '../utils/easing';
 import { wrapLine } from '../utils/text';
 
 export default class Title extends Animation {
@@ -16,23 +13,12 @@ export default class Title extends Animation {
   }
 
   animateIn() {
-    gsap.to(this.elements.span, {
-      yPercent: 0,
-      rotate: 0,
-      ease: expoOut,
-      duration: 1.5,
-      delay: this.delay,
-    });
+    this.element.classList.add('visible');
 
     super.animateIn();
   }
 
   animateOut() {
-    gsap.set(this.elements.span, {
-      yPercent: 125,
-      rotate: this.rotate ? '5deg' : 0,
-    });
-
     super.animateOut();
   }
 }

@@ -1,7 +1,9 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import imagesLoaded from 'imagesloaded';
 
 import Component from '../classes/Component';
+import { delay } from '../utils/math';
 
 export default class Preloader extends Component {
   constructor() {
@@ -11,8 +13,10 @@ export default class Preloader extends Component {
 
     this.loadedTextureUrl = [];
     window.TEXTURES = {};
+    window.MODELS = {};
 
     this.textureLoader = new THREE.TextureLoader();
+    this.gltfLoader = new GLTFLoader();
   }
 
   preload(content) {
@@ -40,7 +44,38 @@ export default class Preloader extends Component {
       )
     );
 
-    Promise.all([preloadImages, preloadTextures]).then(() => {
+    const assetsToLoad = [
+      { url: '/models/arm.glb', name: 'arm1' },
+      { url: '/models/arm2.glb', name: 'arm2' },
+    ];
+
+    const preloadModels = Promise.all(
+      assetsToLoad.map(
+        (asset) =>
+          new Promise((res) => {
+            this.gltfLoader.load(asset.url, (gltf) => {
+              window.MODELS[asset.name] = gltf.scene;
+              res();
+            });
+          })
+      )
+    );
+
+    // const preloaderAnimation = new Promise(async (res) => {
+    //   this.element.classList.add('show');
+
+    //   await delay(1500);
+
+    //   res();
+    // });
+
+    Promise.all([
+      preloadImages,
+      preloadTextures,
+      preloadModels,
+      // preloaderAnimation,
+    ]).then(() => {
+      // this.element.classList.add('out');
       this.emit('preloaded');
     });
   }

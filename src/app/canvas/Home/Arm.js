@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import EventEmitter from 'events';
 
 import { map } from '../../utils/math';
 
@@ -101,33 +102,50 @@ const steps = [
   },
 ];
 
-export default class Arm {
-  constructor({ scene, screen, arm }) {
+export default class Arm extends EventEmitter {
+  constructor({ scene, screen, arm1, arm2 }) {
+    super();
+
     this.scene = scene;
     this.screen = screen;
-    this.arm = arm;
+    this.arm1 = arm1;
+    this.arm2 = arm2;
 
     this.group = new THREE.Group();
     this.scene.add(this.group);
 
-    this.createArm();
+    this.type = 1;
+
+    this.createArms();
+    this.onTypeChange(this.type);
   }
 
-  createArm() {
-    const material = new THREE.MeshPhysicalMaterial({
+  createArms() {
+    const material1 = new THREE.MeshPhysicalMaterial({
       color: new THREE.Color('#b0b0b0'),
       metalness: 1,
       roughness: 0.25,
       side: THREE.DoubleSide,
     });
 
-    this.arm.traverse((node) => {
+    const material2 = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#efefef'),
+      metalness: 0.6,
+      roughness: 0.5,
+      side: THREE.DoubleSide,
+    });
+
+    this.arm1.traverse((node) => {
       if (node.material) {
-        node.material = material;
+        node.material = material1;
       }
     });
 
-    this.group.add(this.arm);
+    this.arm2.traverse((node) => {
+      if (node.material) {
+        node.material = material2;
+      }
+    });
 
     this.onWheel(0);
   }
@@ -137,6 +155,24 @@ export default class Arm {
    */
   onResize({ screen }) {
     this.screen = screen;
+  }
+
+  onTypeChange(type) {
+    if (this.type === 1) {
+      this.group.remove(this.arm1);
+    } else {
+      this.group.remove(this.arm2);
+    }
+
+    if (type === 1) {
+      this.group.add(this.arm1);
+    } else {
+      this.group.add(this.arm2);
+    }
+
+    this.emit('onTypeChange', type);
+
+    this.type = type;
   }
 
   onWheel(scroll) {
@@ -155,6 +191,14 @@ export default class Arm {
 
     const from = steps[current];
     const to = steps[current + 1];
+
+    this.group.visible = from.type === to.type;
+
+    const type = to.type;
+
+    if (type !== this.type) {
+      this.onTypeChange(type);
+    }
 
     const scale =
       map(progress, 0, 1, from.scale, to.scale) * this.screen.height;

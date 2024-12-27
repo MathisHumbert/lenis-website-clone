@@ -1,7 +1,4 @@
-import gsap from 'gsap';
-
 import Animation from '../classes/Animation';
-import { easeInOut } from '../utils/easing';
 
 export default class Appear extends Animation {
   constructor({ element }) {
@@ -9,19 +6,12 @@ export default class Appear extends Animation {
   }
 
   animateIn() {
-    gsap.to(this.element, {
-      opacity: 1,
-      delay: this.delay,
-      duration: 1,
-      ease: easeInOut,
-    });
+    this.element.classList.add('visible');
 
     super.animateIn();
   }
 
   animateOut() {
-    gsap.set(this.element, { opacity: 0 });
-
     super.animateOut();
   }
 }

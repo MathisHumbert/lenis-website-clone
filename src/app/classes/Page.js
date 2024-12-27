@@ -10,6 +10,7 @@ import { easeOut } from '../utils/easing';
 import Appear from '../animations/Appear';
 import Text from '../animations/Text';
 import Title from '../animations/Title';
+import { delay } from '../utils/math';
 
 export default class Page extends EventEmitter {
   constructor({ classes, id, element, elements, isScrollable = true }) {
@@ -120,16 +121,21 @@ export default class Page extends EventEmitter {
   show() {
     this.lenis.scrollTo(0, { immediate: true, force: true });
 
-    each(this.animations, (animation) => animation.createAnimation());
-
     this.addEventListeners();
 
-    return new Promise((res) => {
-      const tl = gsap.timeline();
+    each(this.animations, (animation) => animation.createAnimation());
 
-      tl.set(this.element, { autoAlpha: 1 }, 0).call(() => {
+    return new Promise(async (res) => {
+      const tl = gsap.timeline({});
+
+      tl.set(this.element, { autoAlpha: 1 }, 0).call(async () => {
+        await delay(500);
+
+        this.onResize(this.size, this.fontSize);
+
         this.lenis.start();
         this.isVisible = true;
+
         res();
       });
     });

@@ -1,0 +1,68 @@
+.footer {
+  position: relative;
+  height: 100vh;
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .button {
+    position: absolute;
+    left: $grid-margin;
+    bottom: 4rem;
+    height: fit-content;
+  }
+}
+
+.footer__top {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat($grid-count, minmax(0, 1fr));
+  grid-gap: $grid-gutter;
+  padding: 0 $grid-margin 4rem;
+}
+
+.footer__first {
+  @extend %h1;
+
+  grid-column: 1 / span 7;
+
+  .contrast {
+    color: $theme-contrast;
+  }
+}
+
+.footer__last {
+  @extend %h1;
+
+  grid-column: 2 / -1;
+  align-self: end;
+  text-align: end;
+}
+
+.footer__bottom {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 $grid-margin;
+}
+
+.footer__links {
+  display: flex;
+  gap: 3.2rem;
+}
+
+.footer__link {
+  @extend %p-xs;
+}
+
+.footer__tm {
+  @extend %p-xs;
+
+  span {
+    vertical-align: text-top;
+  }
+}

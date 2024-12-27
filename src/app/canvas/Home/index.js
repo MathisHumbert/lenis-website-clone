@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import Arm from './Arm';
 
@@ -15,33 +14,35 @@ export default class Home {
   }
 
   createArm() {
-    const loader = new GLTFLoader();
-
-    loader.load('/models/arm.glb', (gltf) => {
-      const { scene: arm1 } = gltf;
-      this.arm = new Arm({ scene: this.scene, screen: this.screen, arm: arm1 });
+    this.arm = new Arm({
+      scene: this.scene,
+      screen: this.screen,
+      arm1: window.MODELS.arm1,
+      arm2: window.MODELS.arm2,
     });
+
+    this.arm.on('onTypeChange', (type) => this.onTypeChange(type));
   }
 
   createLights() {
-    const ambientLight = new THREE.AmbientLight('#ff98a2');
-    this.scene.add(ambientLight);
+    this.ambientLight = new THREE.AmbientLight('#ff98a2');
+    this.scene.add(this.ambientLight);
 
     const lightOneGroup = new THREE.Group();
-    const lightOne = new THREE.DirectionalLight(
+    this.lightOne = new THREE.DirectionalLight(
       new THREE.Color('#ff98a2'),
       0.35
     );
-    lightOneGroup.add(lightOne);
+    lightOneGroup.add(this.lightOne);
     lightOneGroup.position.set(-200, 150, 50);
     this.scene.add(lightOneGroup);
 
     const lightTwoGroup = new THREE.Group();
-    const lightTwo = new THREE.DirectionalLight(
+    this.lightTwo = new THREE.DirectionalLight(
       new THREE.Color('#ff98a2'),
       0.15
     );
-    lightTwoGroup.add(lightTwo);
+    lightTwoGroup.add(this.lightTwo);
     lightTwoGroup.position.set(300, -100, 150);
     this.scene.add(lightTwoGroup);
   }
@@ -69,6 +70,26 @@ export default class Home {
   onWheel(scroll) {
     if (this.arm && this.arm.onWheel) {
       this.arm.onWheel(scroll);
+    }
+  }
+
+  onTypeChange(type) {
+    if (type === 1) {
+      this.ambientLight.color.set(new THREE.Color('#ff98a2'));
+
+      this.lightOne.color.set(new THREE.Color('#ff98a2'));
+      this.lightOne.intensity = 0.35;
+
+      this.lightTwo.color.set(new THREE.Color('#ff98a2'));
+      this.lightTwo.intensity = 0.15;
+    } else {
+      this.ambientLight.color.set(new THREE.Color('#b0b0b0'));
+
+      this.lightOne.color.set(new THREE.Color('#efefef'));
+      this.lightOne.intensity = 1;
+
+      this.lightTwo.color.set(new THREE.Color('#efefef'));
+      this.lightTwo.intensity = 1;
     }
   }
 

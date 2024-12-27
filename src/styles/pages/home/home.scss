@@ -10,10 +10,9 @@
 @import './solutions';
 @import './featuring';
 @import './in_use';
+@import './footer';
 
 .button {
-  position: relative;
-  grid-column: 10 / span 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,6 +24,16 @@
   color: $color-black;
   overflow: hidden;
   text-align: center;
+
+  &[data-animation='appear'] {
+    opacity: 0.5;
+    transform: translate3d(0, 100%, 0);
+
+    &.visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
 
   &::after,
   &::before {
@@ -44,6 +53,25 @@
     background: $theme-secondary;
     transition: transform 600ms $ease-out-expo;
     z-index: 0;
+  }
+
+  &.light {
+    &::after {
+      background: $theme-primary;
+    }
+
+    .button__icon {
+      background: $theme-secondary;
+
+      svg {
+        color: $theme-primary;
+        background: $theme-secondary;
+      }
+    }
+
+    .button__text__hidden {
+      color: $theme-secondary;
+    }
   }
 }
 
@@ -142,37 +170,10 @@
   .button__icon {
     border: 1px solid $theme-secondary;
   }
-}
 
-.footer {
-  position: relative;
-  height: 100vh;
-  padding: 4rem 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.footer__top {
-  display: grid;
-  grid-template-columns: repeat($grid-count, minmax(0, 1fr));
-  grid-gap: $grid-gutter;
-}
-
-.footer__first {
-}
-
-.footer__last {
-}
-
-.footer__bottom {
-}
-
-.footer__links {
-}
-
-.footer__link {
-}
-
-.footer__tm {
+  &.light {
+    .button__icon {
+      border: 1px solid $theme-primary;
+    }
+  }
 }

@@ -118,18 +118,20 @@ button {
   height: 100%;
 }
 
-[data-animation='appear'] span {
-  will-change: opacity, visibility;
-}
-
-[data-animation='text'] span {
-  display: block;
-  overflow: hidden;
-
+[data-animation='text'] {
   span {
-    display: inline-block;
-    vertical-align: top;
-    will-change: transform;
+    display: block;
+    overflow: hidden;
+
+    span {
+      display: inline-block;
+      vertical-align: top;
+      transform: translate3d(0, 100%, 0);
+    }
+  }
+
+  &.visible span span {
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -139,6 +141,10 @@ button {
   span {
     display: inline-block;
     vertical-align: top;
-    will-change: transform;
+    transform: translate3d(0, 100%, 0);
+  }
+
+  &.visible span {
+    transform: translate3d(0, 0, 0);
   }
 }

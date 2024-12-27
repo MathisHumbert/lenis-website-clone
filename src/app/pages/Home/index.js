@@ -12,19 +12,25 @@ export default class Home extends Page {
       classes: {},
       element: '.home',
       elements: {
+        heroTitle: '.hero__title',
+        heroScroll: '.hero__scroll__text',
         why: '.why',
+        rethinkCards: '.rethink__cards',
         rethinkCardsWrapper: '.rethink__cards__wrapper',
         rethinkCardsOverflow: '.rethink__cards__overflow',
         solution: '.solution',
-        featuring: '.featuring__section',
+        featuring: '.featuring',
+        featuringSection: '.featuring__section',
         featuringItems: '.featuring__cards__item',
+        inUse: '.in__use',
+        inUseItems: '.in__use__item',
         animationsParallax: '[data-animation="parallax"]',
       },
     });
 
     window.threshold = [];
     this.theme = 'dark';
-
+    this.hasScrolled = false;
     this.featuring = {
       start: 0,
       end: 0,
@@ -49,6 +55,9 @@ export default class Home extends Page {
    * Animations.
    */
   async show() {
+    this.elements.heroTitle.classList.add('visible');
+    this.elements.heroScroll.classList.add('visible');
+
     return super.show();
   }
 
@@ -74,18 +83,23 @@ export default class Home extends Page {
 
     this.solutionOffset = getOffset(this.elements.solution, this.scroll);
 
-    const featuringOffset = getOffset(this.elements.featuring, this.scroll);
+    const featuringSectionRect = getOffset(
+      this.elements.featuringSection,
+      this.scroll
+    );
 
-    this.featuring.start = featuringOffset.top - this.size.height * 2;
+    this.featuring.start = featuringSectionRect.top - this.size.height * 2;
     this.featuring.end =
-      featuringOffset.top + featuringOffset.height - this.size.height;
+      featuringSectionRect.top + featuringSectionRect.height - this.size.height;
 
     window.threshold = [];
 
+    // TOP
     window.threshold.push({ id: 'top', value: 0 });
 
+    // WHY
     const whyRect = getOffset(this.elements.why, this.lenis.scroll);
-    const whyRectTop = whyRect.top - size.height / 2;
+    const whyRectTop = whyRect.top - this.size.height / 2;
     window.threshold.push({
       id: 'why-start',
       value: whyRectTop,
@@ -94,13 +108,66 @@ export default class Home extends Page {
       id: 'why-end',
       value: whyRectTop + whyRect.height,
     });
-    window.threshold.push({ id: 'end', value: this.lenis.limit });
+
+    // CARDS
+    const cardsRect = getOffset(this.elements.rethinkCards);
+    const cardsRectTop = cardsRect.top - this.size.height / 2;
+    window.threshold.push({
+      id: 'cards-start',
+      value: cardsRectTop,
+    });
+    window.threshold.push({
+      id: 'cards-end',
+      value: cardsRectTop + cardsRect.height,
+    });
+    window.threshold.push({
+      id: 'red-end',
+      value: cardsRectTop + cardsRect.height + this.size.height,
+    });
+
+    // LIGHT
+    const featuringRect = getOffset(this.elements.featuring, this.lenis.scroll);
+    window.threshold.push({
+      id: 'light-start',
+      value: featuringRect.top - this.size.height,
+    });
+
+    // FEATURES
+    window.threshold.push({
+      id: 'features',
+      value: featuringSectionRect.top,
+    });
+
+    // IN USE
+    const inUseRect = getOffset(this.elements.inUse, this.lenis.scroll);
+    window.threshold.push({
+      id: 'in-use',
+      value: inUseRect.top,
+    });
+
+    // END
+    window.threshold.push({
+      id: 'end',
+      value: this.lenis.limit,
+    });
   }
 
   onWheel(event) {
     super.onWheel(event);
 
+    if (!this.isVisible) return;
+
     const scroll = event.scroll;
+
+    if (scroll > 10) {
+      if (!this.hasScrolled) {
+        this.hasScrolled = true;
+      }
+    } else {
+      if (this.hasScrolled) {
+        this.hasScrolled = false;
+      }
+    }
 
     if (this.horizontalSlider && this.horizontalSlider.onWheel) {
       this.horizontalSlider.onWheel(scroll);
