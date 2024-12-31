@@ -10,26 +10,6 @@ const isProduction = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 3000;
 const base = process.env.BASE || '/';
 
-const fetchDefaults = async (api) => {
-  const assets = [];
-
-  const meta = api.getSingle('meta');
-
-  return { meta, assets };
-};
-
-const fetchHome = async (api) => {
-  const home = await api.getSingle('home');
-
-  return home;
-};
-
-const fetchAbout = async (api) => {
-  const about = await api.getSingle('about');
-
-  return about;
-};
-
 const app = express();
 
 if (!isProduction) {

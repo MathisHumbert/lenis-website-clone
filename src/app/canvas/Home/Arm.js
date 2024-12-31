@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import EventEmitter from 'events';
 
 import { map } from '../../utils/math';
+import FloatEffect from './FloatEffect';
 
 const steps = [
   {
@@ -112,7 +113,10 @@ export default class Arm extends EventEmitter {
     this.arm2 = arm2;
 
     this.group = new THREE.Group();
-    this.scene.add(this.group);
+
+    this.floatEffect = new FloatEffect(this.group);
+
+    this.scene.add(this.floatEffect.getGroup());
 
     this.type = 1;
 
@@ -217,5 +221,14 @@ export default class Arm extends EventEmitter {
     this.group.scale.set(scale, scale, scale);
     this.group.position.copy(position);
     this.group.rotation.copy(rotation);
+  }
+
+  /**
+   * Loop.
+   */
+  update(elapsedTime) {
+    if (this.floatEffect && this.floatEffect.update) {
+      this.floatEffect.update(elapsedTime);
+    }
   }
 }

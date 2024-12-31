@@ -20,6 +20,8 @@ import Responsive from './classes/Responsive';
 import Home from './pages/Home';
 
 import { each } from './utils/dom';
+import ScrollBar from './components/ScrollBar';
+import Cursor from './components/Cursor';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,6 +50,8 @@ export default class App {
     this.createCanvas();
     this.createPages();
     this.createPreloader();
+    this.createScrollBar();
+    this.createCursor();
     this.createLenis();
 
     this.addEventsListeners();
@@ -122,6 +126,14 @@ export default class App {
     this.page.lenis = this.lenis;
   }
 
+  createScrollBar() {
+    this.scrollBar = new ScrollBar();
+  }
+
+  createCursor() {
+    this.cursor = new Cursor();
+  }
+
   /**
    * Events.
    */
@@ -131,10 +143,6 @@ export default class App {
     this.canvas.onPreloaded();
 
     this.page.show();
-
-    // gsap.delayedCall(0.4, () => {
-    //   this.onResize();
-    // });
   }
 
   onPopState() {
@@ -234,6 +242,10 @@ export default class App {
     if (this.page && this.page.onTouchMove) {
       this.page.onTouchMove(event);
     }
+
+    if (this.cursor && this.cursor.onTouchMove) {
+      this.cursor.onTouchMove(event);
+    }
   }
 
   onTouchUp(event) {
@@ -254,6 +266,10 @@ export default class App {
     if (this.page && this.page.onWheel) {
       this.page.onWheel(event);
     }
+
+    if (this.scrollBar && this.scrollBar.onWheel) {
+      this.scrollBar.onWheel(event);
+    }
   }
 
   /**
@@ -273,7 +289,7 @@ export default class App {
     }
 
     if (this.canvas && this.canvas.update) {
-      this.canvas.update(this.lenis.scroll, deltaTime);
+      this.canvas.update(this.lenis.scroll, deltaTime, elapsedTime);
     }
 
     if (this.stats) {
@@ -307,8 +323,6 @@ export default class App {
       passive: true,
     });
     window.addEventListener('touchend', this.onTouchUp, { passive: true });
-
-    // window.addEventListener('wheel', this.onWheel, { passive: true });
   }
 
   addLinkListeners() {
@@ -341,7 +355,6 @@ export default class App {
 }
 
 const slussenFont = new FontFaceObserver('Slussen');
-// const respiraFont = new FontFaceObserver('Respira');
 
 Promise.all([slussenFont.load()])
   .then(() => new App())

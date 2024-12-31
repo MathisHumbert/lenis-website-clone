@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import Arm from './Arm';
+import Particles from './Particles';
 
 export default class Home {
   constructor({ scene, screen }) {
@@ -9,19 +10,9 @@ export default class Home {
 
     this.createLights();
     this.createArm();
+    this.createParticles();
 
     this.show();
-  }
-
-  createArm() {
-    this.arm = new Arm({
-      scene: this.scene,
-      screen: this.screen,
-      arm1: window.MODELS.arm1,
-      arm2: window.MODELS.arm2,
-    });
-
-    this.arm.on('onTypeChange', (type) => this.onTypeChange(type));
   }
 
   createLights() {
@@ -47,6 +38,29 @@ export default class Home {
     this.scene.add(lightTwoGroup);
   }
 
+  createArm() {
+    this.arm = new Arm({
+      scene: this.scene,
+      screen: this.screen,
+      arm1: window.MODELS.arm1,
+      arm2: window.MODELS.arm2,
+    });
+
+    this.arm.on('onTypeChange', (type) => this.onTypeChange(type));
+  }
+
+  createParticles() {
+    this.particles = new Particles({
+      scene: this.scene,
+      width: this.screen.width,
+      height: this.screen.height,
+      depth: 500,
+      count: 100,
+      scale: 500,
+      size: 150,
+    });
+  }
+
   /**
    * Animations.
    */
@@ -65,11 +79,19 @@ export default class Home {
     if (this.arm && this.arm.onResize) {
       this.arm.onResize({ screen });
     }
+
+    if (this.particles && this.particles.onResize) {
+      this.particles.onResize({ screen });
+    }
   }
 
   onWheel(scroll) {
     if (this.arm && this.arm.onWheel) {
       this.arm.onWheel(scroll);
+    }
+
+    if (this.particles && this.particles.onWheel) {
+      this.particles.onWheel(scroll);
     }
   }
 
@@ -96,7 +118,15 @@ export default class Home {
   /**
    * Loop.
    */
-  update(scroll) {}
+  update(elapsedTime) {
+    if (this.arm && this.arm.update) {
+      this.arm.update(elapsedTime);
+    }
+
+    if (this.particles && this.particles.update) {
+      this.particles.update(elapsedTime);
+    }
+  }
 
   /**
    * Destroy.

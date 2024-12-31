@@ -1,0 +1,19 @@
+.scrollbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0;
+  z-index: z('scrollbar');
+}
+
+.scrollbar__inner {
+  --scaleX: 0;
+
+  position: relative;
+  width: 100%;
+  height: clamp(4px, 0.4rem, 4px);
+  background: $color-pink;
+  transform: scaleX(var(--scaleX));
+  transform-origin: 0% 50%;
+}

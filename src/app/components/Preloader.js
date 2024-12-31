@@ -61,21 +61,21 @@ export default class Preloader extends Component {
       )
     );
 
-    // const preloaderAnimation = new Promise(async (res) => {
-    //   this.element.classList.add('show');
+    const preloaderAnimation = new Promise(async (res) => {
+      this.element.classList.add('show');
 
-    //   await delay(1500);
+      await delay(1500);
 
-    //   res();
-    // });
+      res();
+    });
 
     Promise.all([
       preloadImages,
       preloadTextures,
       preloadModels,
-      // preloaderAnimation,
+      preloaderAnimation,
     ]).then(() => {
-      // this.element.classList.add('out');
+      this.element.classList.add('out');
       this.emit('preloaded');
     });
   }

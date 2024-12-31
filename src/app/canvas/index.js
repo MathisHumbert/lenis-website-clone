@@ -134,9 +134,9 @@ export default class Canvas {
   /**
    * Loop.
    */
-  update(scroll, time) {
+  update(scroll, deltaTime, elapsedTime) {
     if (this.home && this.home.update) {
-      this.home.update(scroll);
+      this.home.update(elapsedTime);
     }
 
     this.renderer.render(this.scene, this.camera);

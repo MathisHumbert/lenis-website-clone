@@ -1,0 +1,28 @@
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: z('cursor');
+}
+
+.cursor__container {
+}
+
+.cursor__inner {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.4;
+  border-radius: 50%;
+  border: clamp(2px, 0.2rem, 2px) solid $color-pink;
+  transition: transform 600ms $ease-out-expo;
+
+  &.pointer {
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
